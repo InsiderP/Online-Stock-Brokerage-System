@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["symbol", "quantity", "orderType", "priceType"],
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "description": "Stock symbol"
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of shares"
+    },
+    "orderType": {
+      "type": "string",
+      "enum": ["BUY", "SELL"],
+      "description": "Type of order"
+    },
+    "priceType": {
+      "type": "string",
+      "enum": ["MARKET", "LIMIT"],
+      "description": "Price type of order"
+    },
+    "limitPrice": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Limit price for limit orders"
+    }
+  },
+  "additionalProperties": false
+} 
