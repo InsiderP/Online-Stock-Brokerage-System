@@ -21,7 +21,23 @@ app.use('/api/auth',
   createProxyMiddleware({
     target: config.SERVICES.USER,
     changeOrigin: true,
-    pathRewrite: { '^/api/auth': '' }
+    pathRewrite: {
+      '^/api/auth': '/auth'
+    },
+    onError: (err, req, res) => {
+      console.error('Proxy Error:', err);
+      if (err.code === 'ECONNREFUSED') {
+        return res.status(503).json({
+          success: false,
+          message: 'User service is not available. Please try again later.'
+        });
+      }
+      res.status(500).json({
+        success: false,
+        message: 'Error connecting to user service'
+      });
+    },
+    logLevel: 'debug'
   })
 );
 
@@ -29,7 +45,23 @@ app.use('/api/users', authMiddleware,
   createProxyMiddleware({
     target: config.SERVICES.USER,
     changeOrigin: true,
-    pathRewrite: { '^/api/users': '' }
+    pathRewrite: {
+      '^/api/users': '/users'
+    },
+    onError: (err, req, res) => {
+      console.error('Proxy Error:', err);
+      if (err.code === 'ECONNREFUSED') {
+        return res.status(503).json({
+          success: false,
+          message: 'User service is not available. Please try again later.'
+        });
+      }
+      res.status(500).json({
+        success: false,
+        message: 'Error connecting to user service'
+      });
+    },
+    logLevel: 'debug'
   })
 );
 
@@ -38,4 +70,5 @@ app.use(errorHandler);
 
 app.listen(config.PORT, () => {
   console.log(`API Gateway running on port ${config.PORT}`);
+  console.log(`User Service URL: ${config.SERVICES.USER}`);
 });

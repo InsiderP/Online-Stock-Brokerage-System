@@ -16,9 +16,29 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      availableFunds: {
+        type: DataTypes.DECIMAL(15, 2),
+        defaultValue: 0.00
+      },
       status: {
-        type: DataTypes.ENUM('ACTIVE', 'SUSPENDED'),
+        type: DataTypes.ENUM('ACTIVE', 'SUSPENDED', 'BLACKLISTED'),
         defaultValue: 'ACTIVE'
+      },
+      accountType: {
+        type: DataTypes.ENUM('ADMIN', 'MEMBER'),
+        defaultValue: 'MEMBER'
       }
     }, {
       tableName: 'users',
